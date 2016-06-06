@@ -94,7 +94,7 @@ object Jury {
       .formParam("data[0][shortname]", shortname)
       .formParam("data[0][name]", name)
       .formParam("data[0][activatetime_string]", "-00:00")
-      .formParam("data[0][starttime_string]", contestformat.format(Calendar.getInstance().getTime()))
+      .formParam("data[0][starttime_string]", contestformat.format(Calendar.getInstance().getTime()) + " America/New_York")
       .formParam("data[0][freezetime_string]", "+99:00")
       .formParam("data[0][endtime_string]", "+99:00")
       .formParam("data[0][unfreezetime_string]", "+99:00")
