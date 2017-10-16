@@ -18,21 +18,41 @@ import java.text.SimpleDateFormat
 object User {
   def login(user: Expression[String], pass: Expression[String] = null): ChainBuilder = {
 		val realpass = pass match {	case a:Expression[String] => a;	case _ => user }
-    return exec(http("Login Request")
-      .post("/public/login.php")
-      .formParam("cmd", "login")
-      .formParam("login", session => user(session))
-      .formParam("passwd", session => realpass(session)))
+
+    return exec(
+        http("Login page get csrf")
+        .get("/login")
+        .check(
+          regex("""<input type="hidden" name="_csrf_token" value="([^"]*)">""")
+          .find
+          .saveAs("csrftoken")
+        ))
+      .exec(http("Login Request")
+        .post("/login")
+        .formParam("_username", session => user(session))
+        .formParam("_password", session => realpass(session))
+        .formParam("_csrf_token", "${csrftoken}")
+      )
 	}
 
   def register(user: Expression[String], pass: Expression[String] = null): ChainBuilder = {
     val realpass = pass match {	case a:Expression[String] => a;	case _ => user }
-    return exec(http("Register Request")
-      .post("/public/login.php")
-      .formParam("cmd", "register")
-      .formParam("login", session => user(session))
-      .formParam("passwd", session => realpass(session))
-      .formParam("passwd2", session => realpass(session)))
+
+    return exec(
+        http("Registration page get csrf")
+        .get("/register")
+        .check(
+          regex("""<input type="hidden" id="user_registration__token" name="user_registration._token." value="([^"]*)" />""")
+          .find
+          .saveAs("csrftoken")
+        ))
+      .exec(http("Register user")
+        .post("/register")
+        .formParam("user_registration[username]", session => user(session))
+        .formParam("user_registration[plainPassword][first]", session => realpass(session))
+        .formParam("user_registration[plainPassword][second]", session => realpass(session))
+        .formParam("user_registration[_token]", "${csrftoken}")
+      )
   }
 }
 
