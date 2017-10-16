@@ -128,6 +128,7 @@ object Jury {
       .formParam("data[0][mapping][1][items]", "")
       .formParam("data[0][enabled]", "1")
       .formParam("problems", "")
+      .formParam("data[0][mapping][0][items]", "")
       .formParam("data[0][mapping][0][fk][0]", "cid")
       .formParam("data[0][mapping][0][fk][1]", "probid")
       .formParam("data[0][mapping][0][table]", "contestproblem")
