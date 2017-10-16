@@ -10,11 +10,11 @@ import Jury._
 
 class AdminSetup extends Simulation {
 
-	val httpProtocol = http
+  val httpProtocol = http
         .baseURL(System.getProperty("baseurl"))
-		.inferHtmlResources()
+        .inferHtmlResources()
 
-	val scn = scenario("AdminSetup")
+  val scn = scenario("AdminSetup")
         .exec(User.login("admin"))
         .exec(Jury.modify_config(Map("config_allow_registration"->"1")))
         .exec(Jury.create_contest("gatling","Gatling Test Contest"))
