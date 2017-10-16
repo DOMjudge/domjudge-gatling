@@ -33,6 +33,7 @@ class ContestSimulation extends Simulation {
     .exitHereIfFailed
 
     // Make a submission, view team information, check scoreboard
+    .exec(Team.teampage_cid).pause(5) // Used to get the contestid(we'll need it later to request a clarification)
     .exec(Team.teampage).pause(5)
     .exec(Team.submit_java).pause(10)
     .exec(Team.teamscoreboard).pause(10)

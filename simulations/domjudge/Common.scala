@@ -77,13 +77,17 @@ object Team {
   def requestclarification() =
     exec(http("Request Clarification")
       .post("/team/clarification.php")
-      .formParam("problem", "1-general")
+      .formParam("problem", "${cid}-general")
       .formParam("bodytext", "${user} needs help")
       .formParam("submit", "Send"))
 
   val teampage = exec(http("Team Page").get("/team/")
       .check(
         regex("""<a href="team\.php.*?=(.*?)">""").find.saveAs("team_id")
+      ))
+  val teampage_cid = exec(http("Team Page(for CID)").get("/team/")
+      .check(
+        regex("""<option value="([^"]*)".*>gatling""").find.saveAs("cid")
       ))
   // For debugging
   //.exec(session => {
