@@ -29,6 +29,7 @@ class AdminSetup extends Simulation {
         .exec(Jury.enable_language("Python3", "py3",    List("py3")           ))
         .exec(Jury.enable_language("Ruby",    "rb",     List("rb")            ))
         .exec(Jury.enable_language("Scala",   "scala",  List("scala")         ))
+        .exec(Jury.enable_language("Kotlin",  "kt",     List("kt")            ))
 
 setUp(scn.inject(atOnceUsers(1))).protocols(httpProtocol)
 }
