@@ -62,10 +62,38 @@ class ContestSimulation extends Simulation {
     .exec(Team.teampage).pause(16)
     .exec(Team.teampage).pause(5)
   setUp(scn.inject(
-			//atOnceUsers(10) // start with 10 users
+      atOnceUsers(1) // start with 1 users
+			//atOnceUsers(100) // start with 1 users
             //constantUsersPerSec(5) during (30 seconds) randomized  // gets to ~150 users in 30seconds
-            constantUsersPerSec(18) during (60 seconds) randomized  // gets to ~1000(ish) users in 60seconds
+      //      constantUsersPerSec(18) during (60 seconds) randomized  // gets to ~1000(ish) users in 60seconds
 			//rampUsers(500) over (60 seconds)
-  )).protocols(httpProtocol).pauses(uniformPausesPlusOrMinusPercentage(25)) // adjust pauses by 25percent either way
+
+      // Use with the throttle commands below
+      //constantUsersPerSec(30) during (45 seconds) // 1350 users?
+  ))
+    /*.throttle(
+      jumpToRps(20).holdFor(2 minutes)
+    )*/
+    .maxDuration(6 minutes)
+    /*.throttle(
+      reachRps(50) in (30 seconds),
+      holdFor(1 minute),
+      reachRps(100) in (30 seconds),
+      holdFor(1 minute),
+      reachRps(150) in (30 seconds),
+      holdFor(1 minute),
+      reachRps(200) in (30 seconds),
+      holdFor(2 minutes)*/
+      /*reachRps(250) in (30 seconds),
+      holdFor(1 minute),
+      reachRps(300) in (30 seconds),
+      holdFor(1 minute),
+      reachRps(400) in (30 seconds),
+      holdFor(1 minute),
+      reachRps(500) in (30 seconds),
+      holdFor(5 minutes)*/
+    //)
+    .protocols(httpProtocol)
+    .pauses(uniformPausesPlusOrMinusPercentage(25)) // adjust pauses by 25percent either way
 
 }
