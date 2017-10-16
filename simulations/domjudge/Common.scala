@@ -113,7 +113,22 @@ object Jury {
   // Sets the session value "contest_id" with the resulting contest id(to be used when uploading a problem)
   def create_contest(shortname: String = "test", name: String = "gatling test contest"): ChainBuilder = {
     val contestformat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-    return exec(http("Create Contest")
+
+    return exec(http("Check if contest already exists")
+      .get("/jury/contests.php")
+      .check(
+        regex("""id=(.*?)">""" + shortname).optional.saveAs("contest_id")
+      )
+    )
+    .doIf(session => session("contest_id").asOption[Any].isDefined) {
+      exec(http("Delete existing contest")
+        .post("/jury/delete.php")
+        .formParam("table", "contest")
+        .formParam("cid", "${contest_id}")
+        .formParam("confirm", "Yes I'm sure!")
+      )
+    }
+    .exec(http("Create Contest")
       .post("/jury/edit.php")
       .formParam("data[0][shortname]", shortname)
       .formParam("data[0][name]", name)
