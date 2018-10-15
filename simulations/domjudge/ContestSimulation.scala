@@ -13,7 +13,7 @@ import Spectator._
 class ContestSimulation extends Simulation {
   var feeder = Iterator.from(0).map(i => Map("user" -> f"gatlinguser$i%04d"))
   val httpProtocol = http
-    .baseURL(System.getProperty("baseurl"))
+    .baseUrl(System.getProperty("baseurl"))
     .inferHtmlResources()
 
   // Scenario that just grabs the public scoreboard every 30 seconds, some number of times

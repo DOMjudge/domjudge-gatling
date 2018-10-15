@@ -11,7 +11,7 @@ import Jury._
 class AdminSetup extends Simulation {
 
   val httpProtocol = http
-        .baseURL(System.getProperty("baseurl"))
+        .baseUrl(System.getProperty("baseurl"))
         .inferHtmlResources()
 
   val scn = scenario("AdminSetup")
