@@ -59,7 +59,7 @@ class ContestSimulation extends Simulation {
     .exec(Team.teampage).pause(4)
     .exec(Team.teamscoreboard).pause(8)
     .exec(Team.teampage).pause(2)
-    .exec(Team.submit_c).pause(11)
+    .exec(Team.submit_nonewline).pause(11)
     .exec(Team.teampage).pause(16)
     .exec(Team.teampage).pause(5)
   setUp(scn.inject(

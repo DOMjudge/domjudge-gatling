@@ -74,6 +74,7 @@ object Team {
   val submit_lua    = exec(_submit("lua",     "test-hello.lua"))
   val submit_js     = exec(_submit("js",      "test-hello.js"))
   val submit_csharp = exec(_submit("csharp",  "test-hello.cs"))
+  val submit_nonewline = exec(_submit("c",       "test-output-nonewline.c"))
 
   def requestclarification() =
     exec(http("Request Clarification")
