@@ -68,6 +68,7 @@ object Team {
   val submit_java   = exec(_submit("java",    "test-hello.java"))
   val submit_c      = exec(_submit("c",       "test-hello.c"))
   val submit_hs     = exec(_submit("hs",      "test-hello.hs"))
+  val submit_kt     = exec(_submit("kt",      "test-hello.kt"))
   val submit_py2    = exec(_submit("py2",     "test-hello.py2"))
   val submit_py3    = exec(_submit("py3",     "test-hello.py3"))
   val submit_lua    = exec(_submit("lua",     "test-hello.lua"))

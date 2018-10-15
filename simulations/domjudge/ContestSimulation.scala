@@ -54,6 +54,7 @@ class ContestSimulation extends Simulation {
     .exec(Team.teampage).pause(14)
     .exec(Team.submit_py2).pause(8)
     .exec(Team.submit_hs).pause(5)
+    .exec(Team.submit_kt).pause(5)
     .exec(Team.teampage).pause(3)
     .exec(Team.teampage).pause(4)
     .exec(Team.teamscoreboard).pause(8)
