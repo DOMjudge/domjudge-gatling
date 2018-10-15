@@ -18,7 +18,6 @@ class AdminSetup extends Simulation {
         .exec(User.login("admin"))
         .exec(Jury.modify_config(Map("config_allow_registration"->"1")))
         .exec(Jury.create_contest("gatling","Gatling Test Contest"))
-        .exec(Jury.upload_problem("hello-testcase.zip"))
         .exec(Jury.enable_language("c#",      "csharp", List("csharp","cs")   ))
         .exec(Jury.enable_language("Ada",     "adb",    List("adb","ads")     ))
         .exec(Jury.enable_language("Fortran", "f95",    List("f95", "f90")    ))
@@ -30,6 +29,7 @@ class AdminSetup extends Simulation {
         .exec(Jury.enable_language("Ruby",    "rb",     List("rb")            ))
         .exec(Jury.enable_language("Scala",   "scala",  List("scala")         ))
         .exec(Jury.enable_language("Kotlin",  "kt",     List("kt")            ))
+        .exec(Jury.upload_problem("hello-testcase.zip"))
 
 setUp(scn.inject(atOnceUsers(1))).protocols(httpProtocol)
 }
