@@ -2,4 +2,4 @@
 #
 # @EXPECTED_RESULTS@: CORRECT
 
-puts "Hello world!"
+BEGIN { print "Hello world!" }

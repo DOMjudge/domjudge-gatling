@@ -2,4 +2,6 @@
 #
 # @EXPECTED_RESULTS@: CORRECT
 
-puts "Hello world!"
+echo "Hello world!"
+
+exit 0

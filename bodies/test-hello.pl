@@ -2,4 +2,6 @@
 #
 # @EXPECTED_RESULTS@: CORRECT
 
-puts "Hello world!"
+print "Hello world!\n";
+
+exit;
