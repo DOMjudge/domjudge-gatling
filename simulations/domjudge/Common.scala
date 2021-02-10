@@ -32,6 +32,9 @@ object User {
         .formParam("_username", session => user(session))
         .formParam("_password", session => realpass(session))
         .formParam("_csrf_token", "${csrftoken}")
+        .check(
+          regex("<title>Login</title>").notExists
+        )
       )
 	}
 
@@ -49,6 +52,7 @@ object User {
       .exec(http("Register user")
         .post("/register")
         .formParam("user_registration[username]", session => user(session))
+        .formParam("user_registration[teamName]", session => user(session))
         .formParam("user_registration[plainPassword][first]", session => realpass(session))
         .formParam("user_registration[plainPassword][second]", session => realpass(session))
         .formParam("user_registration[_token]", "${csrftoken}")
@@ -92,8 +96,15 @@ object Team {
 
   val teampage = exec(http("Team Page").get("/team/")
       .check(
-        regex("""<a href="team\.php.*?=(.*?)">""").find.saveAs("team_id")
+        regex("""teamoverview""").find
       ))
+  def get_teamid(user: Expression[String], pass: Expression[String] = null) =
+      exec(http("api user info").get("/api/user")
+        .basicAuth(user,pass)
+        .check(
+          jsonPath("$.teamid").saveAs("team_id")
+        )
+      )
   val teampage_cid = exec(http("Team Page(for CID)").get("/team/")
       .check(
         regex("""<option value="([^"]*)".*>gatling""").find.saveAs("cid")
@@ -124,7 +135,7 @@ object Jury {
     val contestformat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
 
     return exec(http("Check if contest already exists")
-      .get("/jury/contests.php")
+      .get("/jury/contests")
       .check(
         regex("""id=(.*?)">""" + shortname).optional.saveAs("contest_id")
       )
@@ -163,7 +174,7 @@ object Jury {
       .formParam("table", "contest")
       .formParam("referrer", "")
     ).exec(http("Get Contest")
-      .get("/jury/contests.php")
+      .get("/jury/contests")
       .check(
         regex("""id=(.*?)">""" + shortname).find.saveAs("contest_id")
       )
@@ -177,7 +188,7 @@ object Jury {
     val default:Expression[String] = session => session("contest_id").as[String]
     val cid = contest_id match {	case a:Expression[String] => a;	case _ => default }
     return exec(http("Upload Problem")
-        .post("/jury/problem.php")
+        .post("/jury/problem")
         .formParam("contest", session => cid(session))
         .formParam("upload", "Upload")
         .formUpload("problem_archive[]", problem_archive))
@@ -187,14 +198,17 @@ object Jury {
   // All other options will remain unchanged
   def modify_config(config: Map[String,String]) =
     exec(http("Load Current Configuration")
-      .get("/jury/config.php")
+      .get("/jury/config")
       .check(
-        regex("""<input.*name="config_(.*?)".*value="(.*?)".*>""").ofType[(String,String)].findAll.saveAs("current_config")
+        regex("""(?s)<input.*name="config_(.*?)".*value="(.*?)".*>""").ofType[(String,String)].findAll.saveAs("current_config")
       )
+      // .check(
+      //   regex("""(?s)<input.*type="checkbox".*name="config_(.*?)".*checked="(.*?)".*>""").ofType[(String,String)].findAll.saveAs("current_config_checkboxes")
+      // )
     ).exec(http("Update Configuration")
-          .post("/jury/config.php")
+          .post("/jury/config")
           .formParam("save", "Save")
-          .formParamMap(session => session("current_config").as[List[(String,String)]].toMap ++ config))
+          .formParamMap(session => session("current_config").as[List[(String,String)]].toMap ++ session("current_config").as[List[(String,String)]].toMap ++ config))
 
   // Expects to be called like:
   // Jury.enable_language("C#","csharp",)
