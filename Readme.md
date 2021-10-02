@@ -15,7 +15,7 @@ asdf install scala 2.12.12
 To benchmark your DOMjudge server:
 ```bash
 # Clone this repository
-git clone https://github.com/ubergeek42/domjudge-gatling
+git clone https://github.com/DOMjudge/domjudge-gatling
 cd domjudge-gatling
 # Download gatling to this directory
 wget https://repo1.maven.org/maven2/io/gatling/highcharts/gatling-charts-highcharts-bundle/3.4.1/gatling-charts-highcharts-bundle-3.4.1-bundle.zip
@@ -34,3 +34,11 @@ bin/dj_setup_database install-loadtest
 To tune how much load is generated, edit `simulations/domjudge/ContestSimulation.scala` and refer to the comments at the bottom. By default, it'll create a single "user" to run through the team workflow, and a single "spectator" and run through some steps as them.
 
 You should have your judgehosts running during this time as well, as they can contribute a significant amount of load to the system.
+
+# License
+
+DOMjudge, including its documentation, is free software; you can
+redistribute it and/or modify it under the terms of the GNU General
+Public License as published by the Free Software Foundation; either
+version 2, or (at your option) any later version. See the file
+COPYING.
