@@ -23,7 +23,8 @@ class ContestSimulation extends Simulation {
   val spectatorScenario = scenario("PublicScoreboards").exec(Spectator.monitor_scoreboard(10))
 
   // Generate an infinite number of users, starting from gatling000000
-  var feeder = Iterator.from(0).map(i => Map("user" -> f"gatling$i%05d"))
+  // var feeder = Iterator.from(0).map(i => Map("user" -> f"gatling$i%05d"))
+  var feeder = tsv("accounts.tsv").eager.random
 
   // This scenario pretends to be a team. It takes around 3 minutes, and makes ~250 requests(including dependent resources)
   // It tries to be similar to what a team might do, load the team page, submit clarifications, submit problems, load the scoreboard, etc.
@@ -33,8 +34,8 @@ class ContestSimulation extends Simulation {
     .exec(Spectator.getscoreboard).pause(1)
     // Try a few times to get us registered/logged in, if it fails the user is done
     .tryMax(5) {
-        exec(User.register(session => session("user").as[String]))
-        .exec(User.login(session => session("user").as[String])).pause(2)
+        exec(User.register(session => session("user").as[String], session => session("pass").as[String]))
+        .exec(User.login(session => session("user").as[String], session => session("pass").as[String])).pause(2)
     }
     .exitHereIfFailed
 
